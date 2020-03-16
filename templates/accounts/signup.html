@@ -2,16 +2,6 @@
 
 {% block title %}Usuarios{% endblock title %}
 
-{% block role_nav %}
-    <div class="w-100 border-bottom bg-light">
-        <ul class="nav nav-tabs m-auto border-bottom-0">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'signup' %}">Registrar Usuario</a>
-            </li>
-        </ul>
-    </div>
-{% endblock role_nav %}
-
 {% block content %}
   <div class="container">
     <div class="card card-register mx-auto mt-5">
@@ -44,11 +34,11 @@
             {% endif %}
             <div class="form-group">
               <label>Nombres *</label>
-              {{ form.name }}
+              {{ form.first_name }}
             </div>
             <div class="form-group">
               <label>Correo electrónico *</label>
-              {{ form.email }}
+              {{ form.username }}
             </div>
             <div class="form-group">
               <div class="form-row">
