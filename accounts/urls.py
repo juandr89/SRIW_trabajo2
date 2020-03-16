@@ -1,6 +1,6 @@
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
-from .views import CrearUsuario, LoginUsuario
+from .views import CrearUsuario
 from .forms import LoginForm
 from core import views as core_views
 
