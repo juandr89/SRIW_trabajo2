@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}Usuarios{% endblock title %}
+
+{% block role_nav %}
+    <div class="w-100 border-bottom bg-light">
+        <ul class="nav nav-tabs m-auto border-bottom-0">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'signup' %}">Registrar Usuario</a>
+            </li>
+        </ul>
+    </div>
+{% endblock role_nav %}
+
+{% block content %}
+  <div class="container">
+    <div class="card card-register mx-auto mt-5">
+      <div class="card-header">Registro de Usuario</div>
+      <div class="card-body">
+        <form method="POST">
+          {% csrf_token %}
+          <div class="form-group">
+            {% if form.errors %}
+              {% for field in form %}
+                  {% for error in field.errors %}
+                      <div class="card border-danger mb-3">
+                          <div class="card-body text-danger">
+                              <p class="card-text">
+                                  {{ error|escape }}
+                              </p>
+                          </div>
+                      </div>
+                  {% endfor %}
+              {% endfor %}
+              {% for error in form.non_field_errors %}
+                  <div class="card border-danger mb-3">
+                      <div class="card-body text-danger">
+                          <p class="card-text">
+                              {{ error|escape }}
+                          </p>
+                      </div>
+                  </div>
+              {% endfor %}
+            {% endif %}
+            <div class="form-group">
+              <label>Nombres *</label>
+              {{ form.name }}
+            </div>
+            <div class="form-group">
+              <label>Correo electrónico *</label>
+              {{ form.email }}
+            </div>
+            <div class="form-group">
+              <div class="form-row">
+                <div class="col-md-6">
+                  <label>Contraseña *</label>
+                  {{ form.password1 }}
+                </div>
+              </div>
+            </div>
+              <button type="submit" class="btn btn-warning btn-block">Registrar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

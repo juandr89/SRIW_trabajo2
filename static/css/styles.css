@@ -1,0 +1,44 @@
+.form-control:focus {
+    border-color: #feda6e !important;
+        -webkit-box-shadow: 0 0 0 0.2rem rgba(254, 218, 110, 0.25);
+    box-shadow: 0 0 0 0.2rem rgba(254, 218, 110, 0.25);
+}
+select {
+    background: transparent;
+    border-radius: 5px;
+    font-size: 14px;
+    height: 30px;
+    padding: 5px;
+    margin-inline: 5px;
+    width: auto;
+    float: initial;
+}
+
+    select:hover {
+        border-color: #feda6e !important;
+        -webkit-box-shadow: 0 0 0 0.2rem rgba(254, 218, 110, 0.25);
+        box-shadow: 0 0 0 0.2rem rgba(254, 218, 110, 0.25);
+    }
+
+.form-control:read-only {
+    border-color: #feda6e !important;
+    -webkit-box-shadow: 0 0 0 0.2rem rgba(254, 218, 110, 0.25);
+    box-shadow: 0 0 0 0.2rem rgba(254, 218, 110, 0.25);
+}
+
+.nav-tabs {
+    max-width: 1140px !important;
+}
+ .nav-tabs a {
+     color: black;
+ }
+
+ #descuentos-tarifas input[type=text] {
+    height: 38px !important;
+    width: 100%;
+ }
+
+th[rowspan], td[rowspan] {
+    vertical-align: middle;
+}
+

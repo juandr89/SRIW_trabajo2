@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User, Permission
 
-
 class Libro(models.Model):
     nombre = models.CharField(max_length=80)
     autor = models.CharField(max_length=80, null=True, blank=True)

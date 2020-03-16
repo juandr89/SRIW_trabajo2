@@ -1,5 +1,4 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render
 
-
-def ejemplo(request):
-    return HttpResponse("<h1>Probando prr</h1>")
+def home(request):
+    return render(request, 'core/home.html', {'navbar': True})
