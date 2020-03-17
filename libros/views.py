@@ -20,6 +20,7 @@ class VerLibros(ListView):
     def get_context_data(self, **kwargs):
         context = super(VerLibros, self).get_context_data(**kwargs)
         context['calificaciones_list'] = Calificacion.objects.all()
+        print(context)
         return context
 
 @method_decorator([login_required], name='dispatch')

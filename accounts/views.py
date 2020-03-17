@@ -22,6 +22,7 @@ class CrearUsuario(CreateView):
         post = request.POST.copy()
         form = self.form_class(post)
         if form.is_valid():
+            username = request.POST.get('username')
             email = request.POST.get('username')
             password = request.POST.get('password1')
             user = form.save()

@@ -2,13 +2,6 @@
 
 {% block title %}Libros{% endblock title %}
 
-{% block role_nav %}
-    {% if user.is_authenticated %}
-        <meta http-equiv="refresh" content="0; url={% url 'home' %}">
-    {% endif %}
-{% endblock role_nav %}
-
-
 {% block content %}
 {% if user.is_authenticated %}
 <div class="container mt-3">
@@ -31,10 +24,9 @@
                         <p><span class="font-weight-bold">Núm. Páginas:</span> {{ libro.nro_paginas }}</p>
                         <p><span class="font-weight-bold">Precio:</span> $ {{ libro.precio }}</p>
                         <br></br>
-
                         <!-- Calificación -->
                         {% for cal in calificaciones_list %}
-                            {% if user is cal.usuario and libro is cal.libro %}
+                            {% if libro == cal.libro %}
                                 {% if cal.puntaje != None %}
                                     <p><span class="font-weight-bold">Calificación:</span> {{ cal.puntaje }}</p>
                                 {% else %}
