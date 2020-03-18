@@ -6,12 +6,17 @@
 {% if user.is_authenticated %}
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="/static/img/profile.png" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title font-weight-bold text-center"><em>Perfil de {{ user }}</em></h5>
-                <p><span class="font-weight-bold">🡆 Núm. Páginas: </span>{{ perfil.nro_paginas }}</p>
-                <p><span class="font-weight-bold">🡆 Precio: </span>$ {{ perfil.precio }}</p>
+        <div class="col-sm-12 col-md-6">
+            <img class="card-img-top" src="/static/img/profile.png" alt="Card image cap" style="width: 25rem;">
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <div class="card">           
+                <div class="card-body">
+                    <h5 class="card-title font-weight-bold text-center"><em>Perfil de {{ user }}</em></h5>
+                    {% for p in perfil %}
+                        <p><span class="font-weight-bold">🡆 {{ p.label }}: </span>{{ p.value }}</p>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>

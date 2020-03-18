@@ -11,6 +11,9 @@ from .models import Libro , Calificacion
 from django.contrib.auth.models import User
 from .forms import PuntajeForm
 
+# Functions
+from .functions import get_user_profile, get_recomendations
+
 # Create your views here.
 
 @method_decorator([login_required], name='dispatch')
@@ -38,46 +41,20 @@ class ModificarCalificacion(UpdateView):
 
 
 @method_decorator([login_required], name='dispatch')
-class VerPerfilUsuario(TemplateView, ):
+class VerPerfilUsuario(TemplateView):
     template_name = 'libros/perfil-usuario.html'
-
-    def get_user_profile(self, user):
-        # Número de características
-        attr = 2
-        calificaciones = Calificacion.objects.filter(usuario = user)
-        list_libros = []
-        for c in calificaciones:
-            list_libros.append(c.libro)
-
-        mat = []
-        sumaCalificaciones = 0
-        for i in range(len(list_libros)):
-            cal = Calificacion.objects.filter(usuario = user, libro = list_libros[i])[0].puntaje
-            sumaCalificaciones += cal
-            row = []
-            for j in range(attr):
-                if j == 0:
-                    value = list_libros[i].nro_paginas
-                else:
-                    value = list_libros[i].precio
-                row.append(cal * value)
-            mat.append(row)
-
-        rowSuma = []
-        for i in range(attr):
-            suma = 0
-            for j in range(len(mat)):
-                suma += mat[j][i]
-            rowSuma.append(suma)
-
-        perfil = []
-        for i in range(len(rowSuma)):
-            perfil.append(round((rowSuma[i]/sumaCalificaciones), 3))
-
-        obj = {'nro_paginas': perfil[0], 'precio': perfil[1]}
-        return obj
 
     def get_context_data(self, **kwargs):
         context = super(VerPerfilUsuario, self).get_context_data(**kwargs)
-        context['perfil'] = self.get_user_profile(self.request.user)
+        context['perfil'] = get_user_profile(self.request.user)
+        return context
+
+@method_decorator([login_required], name='dispatch')
+class VerRecomendaciones(ListView):
+    model = Libro
+    template_name = 'libros/recomendaciones.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(VerRecomendaciones, self).get_context_data(**kwargs)
+        context['recomendaciones'] = get_recomendations(self.request.user)
         return context

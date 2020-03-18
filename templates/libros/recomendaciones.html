@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Recomendaciones{% endblock title %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<div class="container mt-3">
+    <div class="my-3 row justify-content-center">
+        <h2>Libros recomendados</h2>
+    </div>
+    <div class="row">
+        {% for libro in recomendaciones %}
+            <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <a class="text-dark" href="{{ libro.url }}" target="_blank">
+                            <!-- Identificador único -->
+                            <h5 class="card-title">{{ libro.nombre }} - {{ libro.autor }}</h5>
+                        </a>
+
+                        <!-- Características -->
+                        <p><span class="font-weight-bold">🡆 Autor:</span> {{ libro.autor }}</p>
+                        <p><span class="font-weight-bold">🡆 Editorial:</span> {{ libro.editorial }}</p>
+                        <p><span class="font-weight-bold">🡆 Núm. Páginas:</span> {{ libro.nro_paginas }}</p>
+                        <p><span class="font-weight-bold">🡆 Precio:</span> $ {{ libro.precio }}</p>
+
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% endblock content %}
