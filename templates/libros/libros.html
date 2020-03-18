@@ -13,26 +13,20 @@
             <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
                 <div class="card">
                     <div class="card-body">
-                        <a class="text-dark" href="{{ libro.url }}">
+                        <a class="text-dark" href="{{ libro.url }}" target="_blank">
                             <!-- Identificador único -->
                             <h5 class="card-title">{{ libro.nombre }} - {{ libro.autor }}</h5>
                         </a>
 
                         <!-- Características -->
-                        <p><span class="font-weight-bold">Autor:</span> {{ libro.autor }}</p>
-                        <p><span class="font-weight-bold">Editorial:</span> {{ libro.editorial }}</p>
-                        <p><span class="font-weight-bold">Núm. Páginas:</span> {{ libro.nro_paginas }}</p>
-                        <p><span class="font-weight-bold">Precio:</span> $ {{ libro.precio }}</p>
-                        <br></br>
+                        <p><span class="font-weight-bold">🡆 Autor:</span> {{ libro.autor }}</p>
+                        <p><span class="font-weight-bold">🡆 Editorial:</span> {{ libro.editorial }}</p>
+                        <p><span class="font-weight-bold">🡆 Núm. Páginas:</span> {{ libro.nro_paginas }}</p>
+                        <p><span class="font-weight-bold">🡆 Precio:</span> $ {{ libro.precio }}</p>
                         <!-- Calificación -->
                         {% for cal in calificaciones_list %}
-                            {% if libro == cal.libro %}
-                                {% if cal.puntaje != None %}
-                                    <p><span class="font-weight-bold">Calificación:</span> {{ cal.puntaje }}</p>
-                                {% else %}
-                                    <p><span class="font-weight-bold">Calificación:</span> N/A</p>
-                                {% endif %}
-                                <a href="{% url 'modificar-calificacion' cal.id %}"> <input type="image" width="30" height="30"  name="botonmodificar" src="https://image.flaticon.com/icons/png/512/61/61776.png"></a>
+                            {% if libro == cal.libro and user == cal.usuario %}
+                                <p><span class="font-weight-bold">🡆 Calificación:</span> {{ cal.puntaje }} <a href="{% url 'modificar-calificacion' cal.id %}"> <input type="image" width="20" height="20"  name="botonmodificar" src="https://image.flaticon.com/icons/png/512/61/61776.png"></a></p>
                            {% endif %}
                         {% endfor %}
 
@@ -40,10 +34,10 @@
                         <button 
                             type="button" 
                             class="btn btn-info btn-block" 
-                            data-toggle="modal" data-target="#modal{{ libro.nombre }}-{{ libro.autor }}"
+                            data-toggle="modal" data-target="#modal{{ libro.id }}"
                         >Ver observaciones</button>
                         <!-- Modal: Observaciones -->
-                        <div class="modal fade" id="modal{{ libro.nombre }}-{{ libro.autor }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="modal{{ libro.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -53,7 +47,7 @@
                                 </button>
                                 </div>
                                 <div class="modal-body">
-                                    <p>{{ libros.observaciones }}</p>
+                                    <p>{{ libro.observaciones }}</p>
                                 </div>
                                 <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
