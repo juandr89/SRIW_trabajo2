@@ -214,13 +214,45 @@ def get_recomendations_colab(user):
     # TODO: Recomendación colaborativa. Retorna una lista con los libros a recomendar (ordenada)
     return 0
 
+# Estrategia basada en la popularidad: recomendar los productos más populares
+def coldStartUser():
+    calificaciones = Calificacion.objects.filter()
+
+    list_libros = []
+    for c in calificaciones:
+        if not c.libro in list_libros:
+            list_libros.append(c.libro)
+    
+    popularidad = []
+    for l in list_libros:
+        cal = Calificacion.objects.filter(libro = l)
+        sumaCal = 0
+        for c in cal:
+            sumaCal += c.puntaje
+        promCal = sumaCal/len(cal)
+        popularidad.append((l, promCal))
+    
+    listaOrdenada = sorted(popularidad, key=lambda tup: tup[1], reverse=True)
+    recomendacion = []
+    for i in listaOrdenada:
+        recomendacion.append(i[0])
+    
+    if len(recomendacion) > 10:
+        recomendacion = recomendacion[:10]
+    
+    return recomendacion
+
 def get_recomendations(user):
     pesoContenido = 0.6
     pesoColaborativo = 0.4
 
-    listCon = get_recomendations_content(user)
-    # listCol = get_recomendations_colab(user)
+    #Cold Start (User) - https://medium.com/@juancarlosjaramillo_88910/gu%C3%ADa-para-construir-un-sistema-de-recomendaci%C3%B3n-parte-1-2b1a65d6eac3
+    if len(Calificacion.objects.filter(usuario = user)) == 0:
+        listCon = coldStartUser()
+    else: 
+        listCon = get_recomendations_content(user)
+        # listCol = get_recomendations_colab(user)
 
-    # TODO: Sistema híbrido
+        # TODO: Sistema híbrido
     
     return listCon

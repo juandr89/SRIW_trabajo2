@@ -39,7 +39,7 @@ class SignUpForm(UserCreationForm):
 
 class LoginForm(AuthenticationForm):
     username = forms.CharField(
-        label='Identificacion', required=True,
+        label='Email', required=True,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',

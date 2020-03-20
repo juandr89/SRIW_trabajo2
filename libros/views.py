@@ -46,7 +46,8 @@ class VerPerfilUsuario(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(VerPerfilUsuario, self).get_context_data(**kwargs)
-        context['perfil'] = get_user_profile(self.request.user)
+        if len(Calificacion.objects.filter(usuario = self.request.user)) != 0:
+            context['perfil'] = get_user_profile(self.request.user)
         return context
 
 @method_decorator([login_required], name='dispatch')
