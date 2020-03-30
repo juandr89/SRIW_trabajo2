@@ -1,5 +1,14 @@
 import numpy as np
 import math
+import io
+import pandas as pd
+from surprise import Dataset
+from surprise import Reader
+from surprise import SVD
+from surprise import KNNWithMeans
+from surprise import Dataset
+from surprise.model_selection import GridSearchCV
+import operator
 
 from .models import Libro , Calificacion
 
@@ -212,7 +221,68 @@ def get_recomendations_content(user):
 
 def get_recomendations_colab(user):
     # TODO: Recomendación colaborativa. Retorna una lista con los libros a recomendar (ordenada)
-    return 0
+
+    LIBROS = 'libro'
+    USUARIOS = 'usuario'
+    PUNTAJES = 'puntaje'
+    libros = []
+    usuarios = []
+    puntajes = []
+
+    calificaciones_all = Calificacion.objects.filter(usuario = user)
+    for l in calificaciones_all:
+        if not (l.libro in libros):
+            libros.append(l.libro)
+        if not (l.puntaje in puntajes):
+            puntajes.append(l.puntaje)
+    
+    for i in range(len(puntajes)):
+        usuarios.append(user)
+
+    ratings_dict = {}
+    ratings_dict[LIBROS] = libros
+    ratings_dict[USUARIOS] = usuarios
+    ratings_dict[PUNTAJES] = puntajes
+
+    print('Diccionario>> ',ratings_dict)
+    df = pd.DataFrame(ratings_dict)
+    reader = Reader(rating_scale=(1, 5))
+
+    # Loads Pandas dataframe
+    data = Dataset.load_from_df(df[["usuario", "libro", "puntaje"]], reader)
+    # Loads the builtin Movielens-100k data
+    movielens = Dataset.load_builtin('ml-100k')
+    
+
+    sim_options = {
+    "name": "cosine",
+    "user_based": False,  # Compute  similarities between items
+    }
+    algo = KNNWithMeans(sim_options=sim_options)
+
+
+    trainingSet = data.build_full_trainset()
+    algo.fit(trainingSet)
+    
+    libros_recomendados = {}
+    lista_prediccion = []
+
+    for l in libros:
+        prediction = algo.predict(user,l)
+        result_prediction = prediction.est
+        libros_recomendados[l] = result_prediction
+        lista_prediccion.append(result_prediction)
+    
+    print(libros_recomendados)
+    libros_recomendados_ordenada = sorted(libros_recomendados.items(), key=operator.itemgetter(1), reverse=True)
+    
+    #for i in lista_prediccion:
+    #    best_list.append(lista_prediccion[i])
+    
+    if len(libros_recomendados_ordenada) > 10:
+        libros_recomendados_ordenada = libros_recomendados_ordenada[:10]
+
+    return libros_recomendados_ordenada
 
 # Estrategia basada en la popularidad: recomendar los productos más populares
 def coldStartUser():
@@ -251,8 +321,9 @@ def get_recomendations(user):
         listCon = coldStartUser()
     else: 
         listCon = get_recomendations_content(user)
-        # listCol = get_recomendations_colab(user)
-
+        print('contenido: ', listCon)
+        listCol = get_recomendations_colab(user)
+        print('colaborativo ', listCol)
         # TODO: Sistema híbrido
     
     return listCon

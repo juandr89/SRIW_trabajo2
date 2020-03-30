@@ -6,6 +6,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.views.generic.list import ListView
 from django.urls import reverse_lazy
 from django.contrib import messages
+from django.shortcuts import get_object_or_404
 
 from .models import Libro , Calificacion
 from django.contrib.auth.models import User
@@ -28,11 +29,31 @@ class VerLibros(ListView):
         return context
 
 @method_decorator([login_required], name='dispatch')
+class CrearCalificacion(CreateView):
+    model = Calificacion
+    form_class = PuntajeForm
+    template_name_suffix = '_create_form'
+    success_url =  reverse_lazy('ver_libros')
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        messages.success(request, 'Calificación creada')
+        return super(CrearCalificacion, self).post(request, kwargs)
+
+@method_decorator([login_required], name='dispatch')
 class ModificarCalificacion(UpdateView):
     model = Calificacion
     form_class = PuntajeForm
-    template_name_suffix = '_update_form'
-    success_url =  reverse_lazy('libros')
+    #template_name_suffix = '_update_form'
+    template_name = 'libros/calificacion_update_form.html'
+    success_url =  reverse_lazy('ver_libros')
+    
+    def get_queryset(self):
+        current_user = self.request.user.id
+
+    def get_object(self):
+        id_libro = self.kwargs['pk']
+        return get_object_or_404(Calificacion, libro=id_libro)
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
