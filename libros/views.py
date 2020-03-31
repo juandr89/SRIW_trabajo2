@@ -8,12 +8,12 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
 
-from .models import Libro , Calificacion
+from .models import Libro , Calificacion, Score
 from django.contrib.auth.models import User
-from .forms import PuntajeForm
+from .forms import PuntajeForm, ScoreForm
 
 # Functions
-from .functions import get_user_profile, get_recomendations
+from .functions import get_user_profile, get_recomendations, score
 
 # Create your views here.
 
@@ -26,6 +26,7 @@ class VerLibros(ListView):
     def get_context_data(self, **kwargs):
         context = super(VerLibros, self).get_context_data(**kwargs)
         context['calificaciones_list'] = Calificacion.objects.all()
+        context['score'] = score(self.request.user)
         return context
 
 @method_decorator([login_required], name='dispatch')
@@ -41,6 +42,19 @@ class CrearCalificacion(CreateView):
         return super(CrearCalificacion, self).post(request, kwargs)
 
 @method_decorator([login_required], name='dispatch')
+class CrearScore(CreateView):
+    model = Score
+    form_class = ScoreForm
+    template_name_suffix = '_create_form'
+    success_url =  reverse_lazy('recomendacion')
+
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        messages.success(request, 'Respuesta registrada')
+        return super(CrearScore, self).post(request, kwargs)
+
+@method_decorator([login_required], name='dispatch')
 class ModificarCalificacion(UpdateView):
     model = Calificacion
     form_class = PuntajeForm
@@ -50,10 +64,6 @@ class ModificarCalificacion(UpdateView):
     
     def get_queryset(self):
         current_user = self.request.user.id
-
-    def get_object(self):
-        id_libro = self.kwargs['pk']
-        return get_object_or_404(Calificacion, libro=id_libro)
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)

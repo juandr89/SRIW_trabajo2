@@ -5,6 +5,18 @@
 {% block content %}
 {% if user.is_authenticated %}
 <div class="container mt-3">
+    <div class="my-3 row">
+        <div class="col">
+            <div class="row justify-content-center">
+                <h5>Precisión global: {{ score.0 }} %</h5>
+            </div>   
+        </div>
+        <div class="col">
+            <div class="row justify-content-center">
+                <h5>Precisión usuario: {{ score.1 }} %</h5>
+            </div>   
+        </div>
+    </div>
     <div class="my-3 row justify-content-center">
         <h2>Lista de libros</h2>
     </div>

@@ -1,16 +1,16 @@
 import numpy as np
 import math
 import io
-import pandas as pd
-from surprise import Dataset
-from surprise import Reader
-from surprise import SVD
-from surprise import KNNWithMeans
-from surprise import Dataset
-from surprise.model_selection import GridSearchCV
+# import pandas as pd
+# from surprise import Dataset
+# from surprise import Reader
+# from surprise import SVD
+# from surprise import KNNWithMeans
+# from surprise import Dataset
+# from surprise.model_selection import GridSearchCV
 import operator
 
-from .models import Libro , Calificacion
+from .models import Libro , Calificacion, Score
 
 # get values user profile
 def get_user_profile(user):
@@ -315,15 +315,42 @@ def coldStartUser():
 def get_recomendations(user):
     pesoContenido = 0.6
     pesoColaborativo = 0.4
+    listRec = []
 
     #Cold Start (User) - https://medium.com/@juancarlosjaramillo_88910/gu%C3%ADa-para-construir-un-sistema-de-recomendaci%C3%B3n-parte-1-2b1a65d6eac3
     if len(Calificacion.objects.filter(usuario = user)) == 0:
-        listCon = coldStartUser()
+        listRec = coldStartUser()
     else: 
         listCon = get_recomendations_content(user)
-        print('contenido: ', listCon)
-        listCol = get_recomendations_colab(user)
-        print('colaborativo ', listCol)
+        #print('contenido: ', listCon)
+        #listCol = get_recomendations_colab(user)
+        #print('colaborativo ', listCol)
         # TODO: Sistema híbrido
+        listRec = listCon
     
-    return listCon
+    return listRec
+
+def score(user):
+    scores = Score.objects.filter()
+    scoresU = Score.objects.filter(usuario = user)
+
+    sumaScores = 0
+    sumaScoresU = 0
+
+    for i in scores:
+        sumaScores += i.valor
+    
+    for i in scoresU:
+        sumaScoresU += i.valor
+    
+    if(len(scores)==0):
+        puntaje = 0
+    else:
+        puntaje = sumaScores/len(scores)
+
+    if(len(scoresU)==0):
+        puntajeU = 0
+    else:
+        puntajeU = sumaScoresU/len(scoresU)
+    
+    return([puntaje, puntajeU])

@@ -24,3 +24,11 @@ class Calificacion(models.Model):
 
     def __str__(self):
         return f"libro: {self.libro} - calificacion {self.puntaje}"
+
+class Score(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.PROTECT)
+    libro = models.ForeignKey(Libro, on_delete=models.PROTECT)
+    valor = models.IntegerField(null=True, blank=True)
+
+    def __str__(self):
+        return f"libro: {self.libro} - user: {self.usuario} - calificacion {self.puntaje}"

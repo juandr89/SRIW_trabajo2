@@ -24,6 +24,13 @@
                         <p><span class="font-weight-bold">🡆 Núm. Páginas:</span> {{ libro.nro_paginas }}</p>
                         <p><span class="font-weight-bold">🡆 Precio:</span> $ {{ libro.precio }}</p>
 
+                        <a href="{% url 'crear-score' libro.id %}" class="btn btn-info btn-block" >
+                            ¿Le gustó?
+                        </a>
+                        <a href="{% url 'crear-calificacion' libro.id %}" class="btn btn-info btn-block" >
+                            Calificar
+                        </a>
+
                     </div>
                 </div>
             </div>
