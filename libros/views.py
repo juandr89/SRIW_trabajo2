@@ -6,7 +6,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.views.generic.list import ListView
 from django.urls import reverse_lazy
 from django.contrib import messages
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 
 from .models import Libro , Calificacion, Score
 from django.contrib.auth.models import User
@@ -36,10 +36,26 @@ class CrearCalificacion(CreateView):
     template_name_suffix = '_create_form'
     success_url =  reverse_lazy('ver_libros')
 
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-        messages.success(request, 'Calificación creada')
-        return super(CrearCalificacion, self).post(request, kwargs)
+    def form_valid(self, form):
+        form.instance.usuario = self.request.user
+        form.instance.libro = Libro.objects.get(pk=self.kwargs['pk'])
+        self.object = form.save()
+        return redirect(self.get_success_url())
+
+
+    #def post(self, request, *args, **kwargs):
+        #request.POST = request.POST.copy()
+        #request.POST['usuario'] = self.request.user
+        #form = self.form_class(request.POST)
+        # form.instance.libro = Libro.objects.get(pk=self.kwargs['pk'])
+        # form.instance.usuario = self.request.user
+        #print(form.instance)
+        #print(form.instance.libro)
+        #print(form.instance.usuario)
+        #print(request.POST)
+        #messages.success(request, 'Calificación creada')
+        #return super(CrearCalificacion, self).post(request, kwargs)
+
 
 @method_decorator([login_required], name='dispatch')
 class CrearScore(CreateView):
@@ -48,11 +64,11 @@ class CrearScore(CreateView):
     template_name_suffix = '_create_form'
     success_url =  reverse_lazy('recomendacion')
 
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-        messages.success(request, 'Respuesta registrada')
-        return super(CrearScore, self).post(request, kwargs)
+    def form_valid(self, form):
+        form.instance.usuario = self.request.user
+        form.instance.libro = Libro.objects.get(pk=self.kwargs['pk'])
+        self.object = form.save()
+        return redirect(self.get_success_url())
 
 @method_decorator([login_required], name='dispatch')
 class ModificarCalificacion(UpdateView):

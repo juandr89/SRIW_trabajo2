@@ -31,4 +31,4 @@ class Score(models.Model):
     valor = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
-        return f"libro: {self.libro} - user: {self.usuario} - calificacion {self.puntaje}"
+        return f"libro: {self.libro} - user: {self.usuario} - score {self.valor}"
