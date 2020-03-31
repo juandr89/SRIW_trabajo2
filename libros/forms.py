@@ -6,22 +6,12 @@ class PuntajeForm(forms.ModelForm):
 
     class Meta:
         model = Calificacion
-        fields = '__all__'
+        fields = ('puntaje',)
         labels = {
-            "usuario": "Usuario",
-            "libro": "Libro",
             "puntaje":"Calificacion"
             
         }
         widgets = {
-            'usuario' : forms.TextInput(
-                attrs={
-                    'class':'form-control'
-                }),
-            'libro' : forms.TextInput(
-                attrs={
-                    'class':'form-control'
-                }),
             'puntaje' : forms.TextInput(
                 attrs={
                     'class':'form-control'

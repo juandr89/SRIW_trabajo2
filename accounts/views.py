@@ -26,7 +26,7 @@ class CrearUsuario(CreateView):
             email = request.POST.get('username')
             password = request.POST.get('password1')
             user = form.save()
-            user.usuario.username = form.cleaned_data['username']
+            user.username = form.cleaned_data['username']
             user.save()
             user = authenticate(request, email=email, password=password)
             if user is not None:

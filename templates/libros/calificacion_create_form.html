@@ -14,12 +14,8 @@
             {{ form.puntaje }}
           </div>
           <div class="form-group">
-            <label type="hidden" value="{{ user.id }}" for="Usuario" >Usuario *</label>
-            {{ form.usuario}}  
-          </div>
-          <div class="form-group">
-            <label for="Usuario"> Libro *</label>
-            {{ form.libro }}
+            <label for="Puntaje">Calificación *</label>
+            {{ form.puntaje }}
           </div>
           {% if form.errors %}
               {% for field in form %}

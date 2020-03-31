@@ -226,18 +226,27 @@ def get_recomendations_colab(user):
     USUARIOS = 'usuario'
     PUNTAJES = 'puntaje'
     libros = []
+    libros2 = []
     usuarios = []
     puntajes = []
 
-    calificaciones_all = Calificacion.objects.filter(usuario = user)
+    calificaciones_all = Calificacion.objects.filter()
     for l in calificaciones_all:
-        if not (l.libro in libros):
-            libros.append(l.libro)
-        if not (l.puntaje in puntajes):
-            puntajes.append(l.puntaje)
+        libros.append(l.libro)
+        if l.usuario == user:
+            libros2.append(l.libro)
+        puntajes.append(l.puntaje)
+        usuarios.append(l.usuario)
     
-    for i in range(len(puntajes)):
-        usuarios.append(user)
+    
+    libros_all = Libro.objects.filter()
+    librosUser = []
+    for l in libros_all:
+        if not(l in libros2):
+            librosUser.append(l)
+
+    #for i in range(len(puntajes)):
+        #usuarios.append(user)
 
     ratings_dict = {}
     ratings_dict[LIBROS] = libros
@@ -263,11 +272,13 @@ def get_recomendations_colab(user):
 
     trainingSet = data.build_full_trainset()
     algo.fit(trainingSet)
+
+
     
     libros_recomendados = {}
     lista_prediccion = []
 
-    for l in libros:
+    for l in librosUser:
         prediction = algo.predict(user,l)
         result_prediction = prediction.est
         libros_recomendados[l] = result_prediction
@@ -333,7 +344,7 @@ def get_recomendations(user):
         # Sistema híbrido
         for i in range(len(lista)):
             lst1 = list(lista[i])
-            lst2 = list(listaCol[i])
+            lst2 = list(listCol[i])
             lst1[1] = lst1[1] * pesoContenido
             lst2[1] = lst2[1] * pesoColaborativo
             lista[i] = lst1
@@ -348,7 +359,7 @@ def get_recomendations(user):
             libro = i[0]
             index = libros.index(libro)
             suma = i[1] + list(listCol[index])[1]
-            rec.append(libro, suma)
+            rec.append((libro, suma))
 
         recomendacion = sorted(rec, key=lambda tup: tup[1], reverse=True)
         if len(recomendacion) > 10:

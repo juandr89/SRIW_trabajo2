@@ -62,9 +62,6 @@ class ModificarCalificacion(UpdateView):
     template_name = 'libros/calificacion_update_form.html'
     success_url =  reverse_lazy('ver_libros')
     
-    def get_queryset(self):
-        current_user = self.request.user.id
-
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         messages.success(request, 'Calificación modificada')
