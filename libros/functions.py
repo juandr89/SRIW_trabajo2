@@ -333,7 +333,7 @@ def get_recomendations(user):
         # TODO: Sistema híbrido
         for i in range(len(lista)):
             lista[i][1] = lista[i][1] * pesoContenido
-            listaCol[i][1] = listaCol[i][1] * pesoContenido
+            listaCol[i][1] = listaCol[i][1] * pesoColaborativo
         
         libros = []
         for i in listCon:
