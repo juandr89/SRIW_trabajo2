@@ -340,7 +340,7 @@ def get_recomendations(user):
             listCol[i] = lst2
 
         libros = []
-        for i in listCon:
+        for i in listCol:
             libros.append(i[0])
 
         rec = []
