@@ -328,13 +328,17 @@ def get_recomendations(user):
 
         lista = []
         for i in range(len(listCon)):
-            lista.append(listCon[i], listCol[i][1])
+            lista.append((listCon[i], listCol[i][1]))
 
-        # TODO: Sistema híbrido
+        # Sistema híbrido
         for i in range(len(lista)):
-            lista[i][1] = lista[i][1] * pesoContenido
-            listaCol[i][1] = listaCol[i][1] * pesoColaborativo
-        
+            lst1 = list(lista[i])
+            lst2 = list(listaCol[i])
+            lst1[1] = lst1 * pesoContenido
+            lst2[1] = lst2 * pesoColaborativo
+            lista[i] = lst1
+            listCol[i] = lst2
+
         libros = []
         for i in listCon:
             libros.append(i[0])
@@ -343,7 +347,7 @@ def get_recomendations(user):
         for i in lista:
             libro = i[0]
             index = libros.index(libro)
-            suma = i[1] + listCol[index][1]
+            suma = i[1] + list(listCol[index])[1]
             rec.append(libro, suma)
 
         recomendacion = sorted(rec, key=lambda tup: tup[1], reverse=True)
