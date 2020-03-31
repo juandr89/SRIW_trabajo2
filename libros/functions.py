@@ -1,13 +1,13 @@
 import numpy as np
 import math
 import io
-# import pandas as pd
-# from surprise import Dataset
-# from surprise import Reader
-# from surprise import SVD
-# from surprise import KNNWithMeans
-# from surprise import Dataset
-# from surprise.model_selection import GridSearchCV
+import pandas as pd
+from surprise import Dataset
+from surprise import Reader
+from surprise import SVD
+from surprise import KNNWithMeans
+from surprise import Dataset
+from surprise.model_selection import GridSearchCV
 import operator
 
 from .models import Libro , Calificacion, Score
@@ -347,6 +347,8 @@ def get_recomendations(user):
             rec.append(libro, suma)
 
         recomendacion = sorted(rec, key=lambda tup: tup[1], reverse=True)
+        if len(recomendacion) > 10:
+            recomendacion = recomendacion[:10]
 
     return recomendacion
 
