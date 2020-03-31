@@ -12,7 +12,8 @@ class Libro(models.Model):
     url = models.CharField(max_length=500, null=True, blank=True)
     observaciones = models.CharField(max_length=500, null=True, blank=True)
     estado = models.CharField(max_length=50, null=True, blank=True)
-
+    link2 = models.CharField(max_length=500, null=True, blank=True)
+    nombre_autor = models.CharField(max_length=500, null=True, blank=True)
     def __str__(self):
         return self.nombre
 
