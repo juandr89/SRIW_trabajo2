@@ -353,8 +353,12 @@ def get_recomendations(user):
         recomendacion = sorted(rec, key=lambda tup: tup[1], reverse=True)
         if len(recomendacion) > 10:
             recomendacion = recomendacion[:10]
+        
+        hib = []
+        for i in recomendacion:
+            hib.append(i[0])
 
-    return recomendacion
+    return hib
 
 def score(user):
     scores = Score.objects.filter()
