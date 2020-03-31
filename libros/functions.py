@@ -279,8 +279,8 @@ def get_recomendations_colab(user):
     #for i in lista_prediccion:
     #    best_list.append(lista_prediccion[i])
     
-    if len(libros_recomendados_ordenada) > 10:
-        libros_recomendados_ordenada = libros_recomendados_ordenada[:10]
+    #if len(libros_recomendados_ordenada) > 10:
+        #libros_recomendados_ordenada = libros_recomendados_ordenada[:10]
 
     return libros_recomendados_ordenada
 
@@ -323,12 +323,32 @@ def get_recomendations(user):
     else: 
         listCon = get_recomendations_content(user)
         #print('contenido: ', listCon)
-        #listCol = get_recomendations_colab(user)
+        listCol = get_recomendations_colab(user)
         #print('colaborativo ', listCol)
+
+        lista = []
+        for i in range(len(listCon)):
+            lista.append(listCon[i], listCol[i][1])
+
         # TODO: Sistema híbrido
-        listRec = listCon
-    
-    return listRec
+        for i in range(len(lista)):
+            lista[i][1] = lista[i][1] * pesoContenido
+            listaCol[i][1] = listaCol[i][1] * pesoContenido
+        
+        libros = []
+        for i in listCon:
+            libros.append(i[0])
+
+        rec = []
+        for i in lista:
+            libro = i[0]
+            index = libros.index(libro)
+            suma = i[1] + listCol[index][1]
+            rec.append(libro, suma)
+
+        recomendacion = sorted(rec, key=lambda tup: tup[1], reverse=True)
+
+    return recomendacion
 
 def score(user):
     scores = Score.objects.filter()
