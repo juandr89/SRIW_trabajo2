@@ -315,11 +315,11 @@ def coldStartUser():
 def get_recomendations(user):
     pesoContenido = 0.6
     pesoColaborativo = 0.4
-    listRec = []
+    hib = []
 
     #Cold Start (User) - https://medium.com/@juancarlosjaramillo_88910/gu%C3%ADa-para-construir-un-sistema-de-recomendaci%C3%B3n-parte-1-2b1a65d6eac3
     if len(Calificacion.objects.filter(usuario = user)) == 0:
-        listRec = coldStartUser()
+        hib = coldStartUser()
     else: 
         listCon = get_recomendations_content(user)
         #print('contenido: ', listCon)
@@ -334,8 +334,8 @@ def get_recomendations(user):
         for i in range(len(lista)):
             lst1 = list(lista[i])
             lst2 = list(listaCol[i])
-            lst1[1] = lst1 * pesoContenido
-            lst2[1] = lst2 * pesoColaborativo
+            lst1[1] = lst1[1] * pesoContenido
+            lst2[1] = lst2[1] * pesoColaborativo
             lista[i] = lst1
             listCol[i] = lst2
 
