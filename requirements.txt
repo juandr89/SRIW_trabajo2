@@ -1,5 +1,5 @@
-Django==3.0.4
-django-bootstrap-modal-forms==1.4.2
-numpy==1.18.2
-surprise
+Django
+django-bootstrap-modal-forms
+numpy
 pandas
+djangorestframework

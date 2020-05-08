@@ -2,12 +2,12 @@ import numpy as np
 import math
 import io
 import pandas as pd
-from surprise import Dataset
-from surprise import Reader
-from surprise import SVD
-from surprise import KNNWithMeans
-from surprise import Dataset
-from surprise.model_selection import GridSearchCV
+# from surprise import Dataset
+# from surprise import Reader
+# from surprise import SVD
+# from surprise import KNNWithMeans
+# from surprise import Dataset
+# from surprise.model_selection import GridSearchCV
 import operator
 
 from .models import Libro , Calificacion, Score
@@ -326,50 +326,50 @@ def coldStartUser():
 def get_recomendations(user):
     pesoContenido = 0.6
     pesoColaborativo = 0.4
-    hib = []
+    # hib = []
 
-    #Cold Start (User) - https://medium.com/@juancarlosjaramillo_88910/gu%C3%ADa-para-construir-un-sistema-de-recomendaci%C3%B3n-parte-1-2b1a65d6eac3
-    if len(Calificacion.objects.filter(usuario = user)) == 0:
-        hib = coldStartUser()
-    else: 
-        listCon = get_recomendations_content(user)
-        #print('contenido: ', listCon)
-        listCol = get_recomendations_colab(user)
-        #print('colaborativo ', listCol)
+    # #Cold Start (User) - https://medium.com/@juancarlosjaramillo_88910/gu%C3%ADa-para-construir-un-sistema-de-recomendaci%C3%B3n-parte-1-2b1a65d6eac3
+    # if len(Calificacion.objects.filter(usuario = user)) == 0:
+    #     hib = coldStartUser()
+    # else: 
+    #     listCon = get_recomendations_content(user)
+    #     #print('contenido: ', listCon)
+    #     listCol = get_recomendations_colab(user)
+    #     #print('colaborativo ', listCol)
 
-        lista = []
-        for i in range(len(listCon)):
-            lista.append((listCon[i], listCol[i][1]))
+    #     lista = []
+    #     for i in range(len(listCon)):
+    #         lista.append((listCon[i], listCol[i][1]))
 
-        # Sistema híbrido
-        for i in range(len(lista)):
-            lst1 = list(lista[i])
-            lst2 = list(listCol[i])
-            lst1[1] = lst1[1] * pesoContenido
-            lst2[1] = lst2[1] * pesoColaborativo
-            lista[i] = lst1
-            listCol[i] = lst2
+    #     # Sistema híbrido
+    #     for i in range(len(lista)):
+    #         lst1 = list(lista[i])
+    #         lst2 = list(listCol[i])
+    #         lst1[1] = lst1[1] * pesoContenido
+    #         lst2[1] = lst2[1] * pesoColaborativo
+    #         lista[i] = lst1
+    #         listCol[i] = lst2
 
-        libros = []
-        for i in listCol:
-            libros.append(i[0])
+    #     libros = []
+    #     for i in listCol:
+    #         libros.append(i[0])
 
-        rec = []
-        for i in lista:
-            libro = i[0]
-            index = libros.index(libro)
-            suma = i[1] + list(listCol[index])[1]
-            rec.append((libro, suma))
+    #     rec = []
+    #     for i in lista:
+    #         libro = i[0]
+    #         index = libros.index(libro)
+    #         suma = i[1] + list(listCol[index])[1]
+    #         rec.append((libro, suma))
 
-        recomendacion = sorted(rec, key=lambda tup: tup[1], reverse=True)
-        if len(recomendacion) > 10:
-            recomendacion = recomendacion[:10]
+    #     recomendacion = sorted(rec, key=lambda tup: tup[1], reverse=True)
+    #     if len(recomendacion) > 10:
+    #         recomendacion = recomendacion[:10]
         
-        hib = []
-        for i in recomendacion:
-            hib.append(i[0])
-
-    return hib
+    #     hib = []
+    #     for i in recomendacion:
+    #         hib.append(i[0])
+    return get_recomendations_content(user)[:10]
+    # return hib
 
 def score(user):
     scores = Score.objects.filter()

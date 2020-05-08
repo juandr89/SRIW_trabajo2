@@ -12,8 +12,20 @@ from .models import Libro , Calificacion, Score
 from django.contrib.auth.models import User
 from .forms import PuntajeForm, ScoreForm
 
+from rest_framework import viewsets
+from .serializers import UserSerializer, BookSerializer
+
 # Functions
 from .functions import get_user_profile, get_recomendations, score
+
+# Views API REST
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all().order_by('username')
+    serializer_class = UserSerializer
+
+class BookViewSet(viewsets.ModelViewSet):
+    queryset = Libro.objects.all().order_by('nombre')
+    serializer_class = BookSerializer
 
 # Create your views here.
 

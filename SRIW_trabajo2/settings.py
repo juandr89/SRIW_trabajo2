@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'core',
     'accounts',
     'libros',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

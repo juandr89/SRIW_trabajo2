@@ -26,6 +26,7 @@ media
 
 # venv (Virtual Enviroment)
 venv/
+env/
 
 # Distribution / packaging
 .Python
